@@ -1,0 +1,34 @@
+[
+  {
+    "key": "hero",
+    "id": 18802079,
+    "native": "4000x6011",
+    "focus": "centre",
+    "note": "flat-roofed timber and stone house with warm-lit windows set into a dark conifer headland above the sea at last light",
+    "why": "genuinely modernist volumes, stone piers and large glazing; warm interior light against a cold overcast dusk, and the tonally uniform dark forest across the left two-thirds stays quiet under the headline"
+  },
+  {
+    "key": "hero-reveal",
+    "id": 14572307,
+    "native": "4000x2250",
+    "focus": "centre",
+    "note": "mist lifting off dark still water against a conifer treeline at dusk, a single band of warm light on the horizon",
+    "why": "same cold blue hour, same conifer-and-water world as the hero so it reads as a continuation rather than a cut; near-monochrome, calm, no resort blue anywhere"
+  },
+  {
+    "key": "nature",
+    "id": 18709769,
+    "native": "4000x5982",
+    "focus": "centre",
+    "note": "a stone arched watchtower window opening onto layered misty ridges, near-black masonry surround",
+    "why": "one bold arch aperture reading near-black against luminous mist gives the strong, simple tonal contrast the background-clip:text lettering needs; restrained stone and mist palette, no sky blue"
+  },
+  {
+    "key": "final",
+    "id": 14539405,
+    "native": "4000x2250",
+    "focus": "centre",
+    "note": "a full moon low over a calm dark sea with a single silver light path, hills in silhouette either side",
+    "why": "near-monochrome, very dark and meditative, and the moon plus its reflection sit dead centre so the frame survives the collapse to a vertical slit"
+  }
+]

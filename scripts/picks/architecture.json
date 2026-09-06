@@ -1,0 +1,50 @@
+[
+  {
+    "key": "architecture-01",
+    "id": 12800839,
+    "native": "4000x2667",
+    "focus": "centre",
+    "note": "Board-formed concrete wall with visible timber grain and tie holes, cut diagonally by the hard black shadow of a projecting soffit",
+    "why": "Literal board-formed concrete meeting a hard shadow line; warm raking light, two calm flat fields, no sky, no people"
+  },
+  {
+    "key": "architecture-02",
+    "id": 8672787,
+    "native": "4000x2615",
+    "focus": "centre",
+    "note": "Near-black facade of staggered dark metal and glass panels seen at a raking angle, filling the frame as a repeating grid",
+    "why": "Restrained monochrome structural rhythm with no sky and no lit windows - a facade skin, not a corporate tower"
+  },
+  {
+    "key": "architecture-03",
+    "id": 15663491,
+    "native": "4000x5989",
+    "focus": "attention",
+    "note": "Black and white interior stairwell void where a ceiling light slot throws a single hard wedge of daylight down a white wall, stair balustrade in silhouette at right",
+    "why": "Pure chiaroscuro - one light source with intent, most of the frame black, enormous calm negative space for type"
+  },
+  {
+    "key": "architecture-04",
+    "id": 20207682,
+    "native": "4000x2667",
+    "focus": "centre",
+    "note": "Monochrome dusk view of a low glass-and-concrete pavilion behind a long board-formed wall, mirrored in the still dark water of a reflecting pool, bare branches overhead",
+    "why": "Contemporary modernist wall beside still dark water with a true mirror reflection; overcast grey, no colour, no people, no signage"
+  },
+  {
+    "key": "architecture-05",
+    "id": 13692644,
+    "native": "4000x2667",
+    "focus": "centre",
+    "note": "Low sun raking through a full-height vertical louvre screen, scattering bands and dapples of light across a polished stone floor in an otherwise dark room",
+    "why": "Light is unambiguously the subject; monochrome, low-key, black foreground mass, exactly the brise-soleil-on-stone idea"
+  },
+  {
+    "key": "architecture-06",
+    "id": 30322584,
+    "native": "4000x2667",
+    "focus": "centre",
+    "note": "Near-black mountain ridge filling the lower frame with cloud tearing across it in white ribbons, a pale misty valley and further ridges receding above at first light",
+    "why": "Vast, quiet, almost monochrome horizon study; dark muted tonality and a huge calm dark field, with no saturated blue sky"
+  }
+]

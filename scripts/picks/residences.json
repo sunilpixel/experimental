@@ -1,0 +1,43 @@
+[
+ {
+  "key": "residence-cliff",
+  "id": 2059467,
+  "native": "4008x5010",
+  "focus": "attention",
+  "note": "cantilevered glass and timber house on a snowy slope at dusk, warm interior light against teal sky",
+  "why": "replaces a scaffolded building wrapped in plastic sheeting with wind turbines behind it"
+ },
+ {
+  "key": "residence-forest",
+  "id": 6547200,
+  "native": "2875x3833",
+  "focus": "attention",
+  "note": "timber-clad upper volume cantilevered over a charcoal glazed ground floor among tall pines, snow on the ground, flat white sky",
+  "why": "the brief's exact materials \u2014 timber, blackened cladding, full-height glazing, flat roof; restrained timber/charcoal/pine palette, no people, cars or signage, and open sky at the top edge for type"
+ },
+ {
+  "key": "residence-ocean",
+  "id": 8266995,
+  "native": "3569x5353",
+  "focus": "attention",
+  "note": "sculptural white timber studio with a folded cantilevered roof on bare coastal rock above a grey North Atlantic",
+  "why": "replaces the midday turquoise brochure shot with flat overcast light and a stone/white/ochre palette; a single sculptural modernist volume, deep calm negative space in sky and foreground heath"
+ },
+ {
+  "key": "residence-desert",
+  "id": 28993988,
+  "native": "4559x6839",
+  "focus": "attention",
+  "note": "raw board-formed concrete courtyard walls with two low benches, warm arid light",
+  "why": "replaces a dark landscape with no building; a real contemporary structure with huge negative space",
+  "exposure": 0.66
+ },
+ {
+  "key": "residence-mountains",
+  "id": 8698393,
+  "native": "4000x5328",
+  "focus": "attention",
+  "note": "long glazed pavilion glowing warm amber behind snow-covered boulders and bare trees at blue hour",
+  "why": "cold blue snow light against one warm glazed wall, exactly the brief's single-light-source reading; deep dusk sky rather than saturated daytime blue, and no people, cars or signage"
+ }
+]

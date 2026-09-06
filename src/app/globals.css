@@ -1,26 +1,280 @@
 @import "tailwindcss";
 
+/* ============================================================
+   AURUM — DESIGN SYSTEM
+   ============================================================ */
+
+@theme {
+  /* --- Palette: dark editorial grading --- */
+  --color-ink: #05060a;
+  --color-obsidian: #0a0b10;
+  --color-graphite: #14161c;
+  --color-slate: #2a2d36;
+  --color-ash: #6f6b62;
+  --color-bone: #b9b3a7;
+  --color-ivory: #f2efe8;
+  --color-porcelain: #faf8f4;
+
+  --color-gold: #c8a76a;
+  --color-gold-bright: #e8d3a3;
+  --color-gold-deep: #8f7440;
+
+  /* --- Type --- */
+  --font-display: var(--font-playfair), "Didot", "Times New Roman", serif;
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Motion --- */
+  --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cine: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --nav-fg: 242 239 232;   /* ivory, as rgb triplet for interpolation */
+  --nav-line: 242 239 232;
+  --grain-opacity: 0.055;
+  --vh: 1vh;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ============================================================
+   BASE
+   ============================================================ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* { -webkit-tap-highlight-color: transparent; }
+
+html {
+  background: var(--color-ink);
+  scroll-behavior: auto; /* Lenis owns scrolling */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+::selection { background: var(--color-gold); color: var(--color-ink); }
+
+/* Desktop: hide native cursor, custom cursor takes over */
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * { cursor: none !important; }
+}
+
+/* ============================================================
+   TYPOGRAPHY PRIMITIVES
+   ============================================================ */
+
+.u-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+/* Eyebrow / meta label */
+.u-eyebrow {
+  font-family: var(--font-sans);
+  font-size: clamp(0.54rem, 0.66vw, 0.7rem);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+
+.u-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(0.82rem, 0.95vw, 1rem);
+  line-height: 1.85;
+  letter-spacing: 0.015em;
+}
+
+/* Fluid display scale */
+.t-mega   { font-size: clamp(3.4rem, 13vw, 15rem); }
+.t-huge   { font-size: clamp(2.6rem, 8.2vw, 9rem); }
+.t-large  { font-size: clamp(2rem, 5.2vw, 5.5rem); }
+.t-medium { font-size: clamp(1.6rem, 3.4vw, 3.6rem); }
+
+/* ============================================================
+   CINEMATIC UTILITIES
+   ============================================================ */
+
+/* Every animated word/line lives in an overflow-hidden mask.
+   The padding/negative-margin pair widens the clip box without moving the text:
+   Playfair's ascenders and descenders overshoot the line box far more than
+   Cinzel's did, and were being shaved off by the mask. */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.14em 0 0.18em;
+  margin: -0.14em 0 -0.18em;
+}
+
+.will-anim { will-change: transform, opacity; }
+
+/* For elements that carry transform-style: preserve-3d.
+   `will-change: opacity` is a GROUPING property: it forces the used value of
+   transform-style to flat even while opacity is 1, collapsing the whole 3D
+   scene onto one plane — and getComputedStyle still reports preserve-3d, so it
+   is invisible in devtools. Promote on transform only. */
+.will-t { will-change: transform; }
+
+/* Hairline rules — the gold thread that runs through the site */
+.hairline {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--nav-line) / 0.28) 18%,
+    rgb(var(--nav-line) / 0.28) 82%,
+    transparent
+  );
+  height: 1px;
+}
+
+.hairline-v {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgb(var(--nav-line) / 0.24) 20%,
+    rgb(var(--nav-line) / 0.24) 80%,
+    transparent
+  );
+  width: 1px;
+}
+
+.gold-rule {
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  height: 1px;
+}
+
+/* Cinematic image treatment */
+.cine-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cine-grade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 0%, transparent 60%, rgb(5 6 10 / 0.4) 100%);
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 14vw 3vw rgb(5 6 10 / 0.3);
+}
+
+/* Flat ink plate for floating meta. Never frosted — no glass on this site. */
+.plate {
+  background: rgb(10 11 16 / 0.55);
+  border: 1px solid rgb(242 239 232 / 0.1);
+}
+
+/* Giant watermark typography behind content */
+.watermark {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.78;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(242 239 232 / 0.09);
+  user-select: none;
+  pointer-events: none;
+}
+
+.watermark-solid {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.78;
+  color: rgb(242 239 232 / 0.035);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ============================================================
+   FILM GRAIN + SCANLINE
+   ============================================================ */
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: var(--grain-url);
+  background-size: 220px 220px;
+  mix-blend-mode: overlay;
+  will-change: transform;
+}
+
+/* ============================================================
+   SECTION SCAFFOLD
+   ============================================================ */
+
+.chapter {
+  position: relative;
+  width: 100%;
+}
+
+.pin-stage {
+  position: relative;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.field-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgb(242 239 232 / 0.16);
+  padding: 0.9rem 0;
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.5s var(--ease-luxe);
+}
+.field-input::placeholder { color: rgb(242 239 232 / 0.3); }
+.field-input:focus { border-color: var(--color-gold); }
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { display: none; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Hide scrollbar but keep scrollability */
+::-webkit-scrollbar { width: 0; height: 0; }
+html { scrollbar-width: none; }

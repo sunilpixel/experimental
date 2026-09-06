@@ -1,0 +1,34 @@
+[
+  {
+    "key": "sustainability",
+    "id": 15328419,
+    "native": "4000x2250",
+    "focus": "centre",
+    "note": "Aerial view at dusk of dark forested ridges rising out of a sea of fog filling the valleys below, in near-monochrome blue-grey",
+    "why": "Low-key and almost desaturated with no sky, no people and no structures; the fog banks give large calm areas on both the left and right for the manifesto panel and the gold numerals"
+  },
+  {
+    "key": "testimonial",
+    "id": 13207063,
+    "native": "4000x5997",
+    "focus": "centre",
+    "note": "A long linear gas fireplace burning along a dark steel and glass surround, the single source of light in an otherwise black room",
+    "why": "Literally one warm source in deep shadow, with the upper two thirds and the left half falling to near-black so italic serif text sits over it cleanly"
+  },
+  {
+    "key": "testimonial-portrait",
+    "id": 31870740,
+    "native": "4000x6000",
+    "focus": "attention",
+    "note": "Profile portrait of an older man with a white beard and grey hair tied back, wearing a heavy salt-and-pepper tweed coat, lit softly from one side against a near-black ground",
+    "why": "Commissioned-portrait feel rather than a headshot: no seamless white, no suit and no smile, deep shadow on three sides and a restrained wool-and-skin palette"
+  },
+  {
+    "key": "contact",
+    "id": 14506204,
+    "native": "4000x5000",
+    "focus": "centre",
+    "note": "A tall stone portal framing a receding barrel-vaulted colonnade in cold pale grey-green light, ending at a dark door marked by three small brass lamps",
+    "why": "Monumental and symmetrical with almost no detail to fight the title and concierge panel; cold light with a warm core at the vanishing point, and darker and quieter than the pale gothic cathedral it replaces"
+  }
+]

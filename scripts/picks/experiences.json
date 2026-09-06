@@ -1,0 +1,35 @@
+[
+ {
+  "key": "experience-spa",
+  "id": 32577924,
+  "native": "3376x6000",
+  "focus": "attention",
+  "note": "steaming geothermal water against a muted mineral shore under overcast light",
+  "why": "replaces a close-up of a sauna stove; actual water, no tourists, no turquoise",
+  "exposure": 0.72
+ },
+ {
+  "key": "experience-yacht",
+  "id": 34193423,
+  "native": "4000x5333",
+  "focus": "attention",
+  "note": "Overhead drone view of a white motor yacht under way, its wake cutting across near-black open water",
+  "why": "Almost monochrome ink-and-white, deep negative space in the water, a single hard-edged subject, no sky and no horizon to go blue"
+ },
+ {
+  "key": "experience-dining",
+  "id": 36747300,
+  "native": "3379x4224",
+  "focus": "attention",
+  "note": "A long timber table laid with glassware and linen in a dim room, lit only by two tapers and a wall sconce against a deep slate-green wall",
+  "why": "Deep shadow with small warm pools of candlelight, no people and no plated food, restrained palette of timber, black bentwood and dark green"
+ },
+ {
+  "key": "experience-cultural",
+  "id": 7393760,
+  "native": "3906x5860",
+  "focus": "attention",
+  "note": "Black-and-white view along a classical stone colonnade, low raking sun striping the travertine columns and casting long shadows across the cobbles",
+  "why": "Pure tonal photograph with true blacks between the columns, ancient stone in low raking light, calm rhythmic composition and no people"
+ }
+]
