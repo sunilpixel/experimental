@@ -52,6 +52,11 @@ export default function Preloader() {
     let exitTl: gsap.core.Timeline | null = null;
     let finished = false;
 
+    /** GSAP throws on a null target, and React detaches every ref in here the
+     *  moment finish() flips `gone`. Nothing is handed to a tween unfiltered. */
+    const alive = (...els: Array<Element | null>) =>
+      els.filter((e): e is Element => e !== null);
+
     /** The one path out. Idempotent, and reachable from every failure mode. */
     const finish = () => {
       if (finished) return;
@@ -126,35 +131,52 @@ export default function Preloader() {
 
       /* ---- exit: the panel parts along the rule ------------------------- */
       const runOut = () => {
-        exitTl = gsap.timeline({ onComplete: finish });
-        exitTl
-          .to([wordmark.current, counter.current, chapter.current], {
+        // The panel can already be gone: the hard ceiling below runs on
+        // setTimeout, which keeps counting in a backgrounded tab while GSAP's
+        // rAF ticker is frozen. Returning to the tab resumes the progress tween
+        // and lands here with every ref detached — there is nothing left to
+        // part, so take the exit rather than tween null.
+        if (finished) return;
+
+        const meta = alive(wordmark.current, counter.current, chapter.current);
+        const halves = alive(top.current, bottom.current);
+        if (halves.length < 2) {
+          finish();
+          return;
+        }
+
+        const tl = gsap.timeline({ onComplete: finish });
+        exitTl = tl;
+
+        if (meta.length) {
+          tl.to(meta, {
             opacity: 0,
             y: -16,
             duration: 0.5,
             ease: "aurumIn",
             stagger: 0.04,
-          })
-          .to(rule.current, { scaleX: 0, duration: 0.5, ease: "aurumIn" }, 0.15)
-          // Two halves sweep off opposite edges — the frame opens, never fades.
-          .to(
-            top.current,
-            { yPercent: -100, duration: 1.15, ease: "curtain" },
-            0.35,
-          )
-          .to(
-            bottom.current,
-            { yPercent: 100, duration: 1.15, ease: "curtain" },
-            0.35,
-          );
+          });
+        }
+        if (rule.current) {
+          tl.to(rule.current, { scaleX: 0, duration: 0.5, ease: "aurumIn" }, 0.15);
+        }
+        // Two halves sweep off opposite edges — the frame opens, never fades.
+        tl.to(top.current, { yPercent: -100, duration: 1.15, ease: "curtain" }, 0.35).to(
+          bottom.current,
+          { yPercent: 100, duration: 1.15, ease: "curtain" },
+          0.35,
+        );
       };
 
       /* ---- run to 90, then wait for the document, capped ---------------- */
       let documentReady = document.readyState === "complete";
       let introDone = false;
 
+      let outbound = false;
+
       const maybeComplete = () => {
-        if (!introDone || !documentReady) return;
+        if (outbound || !introDone || !documentReady) return;
+        outbound = true;
         gsap.to(progress, {
           v: 100,
           duration: 0.5,
@@ -196,7 +218,7 @@ export default function Preloader() {
       listeners.forEach((fn) => fn());
       gsap.killTweensOf(progress);
       exitTl?.kill();
-      gsap.killTweensOf([
+      const targets = alive(
         root.current,
         top.current,
         bottom.current,
@@ -204,7 +226,8 @@ export default function Preloader() {
         counter.current,
         chapter.current,
         wordmark.current,
-      ]);
+      );
+      if (targets.length) gsap.killTweensOf(targets);
     };
   }, []);
 

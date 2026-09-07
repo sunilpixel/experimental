@@ -9,11 +9,11 @@
  },
  {
   "key": "residence-forest",
-  "id": 6547200,
-  "native": "2875x3833",
-  "focus": "attention",
-  "note": "timber-clad upper volume cantilevered over a charcoal glazed ground floor among tall pines, snow on the ground, flat white sky",
-  "why": "the brief's exact materials \u2014 timber, blackened cladding, full-height glazing, flat roof; restrained timber/charcoal/pine palette, no people, cars or signage, and open sky at the top edge for type"
+  "id": 14792748,
+  "native": "3749x6664",
+  "focus": "centre",
+  "note": "Two blackened vertical-timber volumes with angular black-framed glazing step down a slope, snow banked on their flat eaves, a snow-hazed spruce hillside rising behind and a flat pale sky filling the top third; no people, cars, signage or text anywhere in frame.",
+  "why": "It is the brief's exact material story — charred/blackened timber cladding plus glass, set among conifers — rendered in a genuine near-monochrome of true black, charcoal, snow-white and desaturated forest green, with a large quiet sky band at the top edge for headline type, matching the panel's established treatment."
  },
  {
   "key": "residence-ocean",
@@ -25,12 +25,11 @@
  },
  {
   "key": "residence-desert",
-  "id": 28993988,
-  "native": "4559x6839",
-  "focus": "attention",
-  "note": "raw board-formed concrete courtyard walls with two low benches, warm arid light",
-  "why": "replaces a dark landscape with no building; a real contemporary structure with huge negative space",
-  "exposure": 0.66
+  "id": 12185420,
+  "native": "4000x5501",
+  "focus": "centre",
+  "note": "A flat sand-ochre plaster wall cut by one narrow vertical void that reads as pure black, with a single hard-edged diagonal shadow crossing the lower half; no people, no signage, no sky.",
+  "why": "It is the most severe and monolithic frame in the pool — sand-toned, near-monochrome, long raking shadow, deep true black in the aperture — and its extreme simplicity (entropy 5.35) survives the panel's +5deg rotation and heaviest at-rest blur while leaving two large quiet fields for headline type."
  },
  {
   "key": "residence-mountains",

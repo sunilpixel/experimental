@@ -1,43 +1,43 @@
 [
   {
     "key": "architecture-01",
-    "id": 12800839,
-    "native": "4000x2667",
+    "id": 21922127,
+    "native": "4000x6000",
     "focus": "centre",
-    "note": "Board-formed concrete wall with visible timber grain and tie holes, cut diagonally by the hard black shadow of a projecting soffit",
-    "why": "Literal board-formed concrete meeting a hard shadow line; warm raking light, two calm flat fields, no sky, no people"
+    "note": "A tight frontal detail of three vertical concrete planes — two coarse exposed-aggregate faces and one fine-textured face — separated by narrow, wholly black joints, with a raking afternoon shadow line stepping diagonally down across them from upper right to lower left.",
+    "why": "It is a true material study in the house palette: warm grey near-monochrome (mean RGB 109/103/94), deep true blacks in the joints and the shadowed lower half, hard architectural shadow edges from raking light, a large quiet flat field on the right for headline type, and no sky, people, text or stock gloss."
   },
   {
     "key": "architecture-02",
-    "id": 8672787,
-    "native": "4000x2615",
+    "id": 32655933,
+    "native": "4000x6000",
     "focus": "centre",
-    "note": "Near-black facade of staggered dark metal and glass panels seen at a raking angle, filling the frame as a repeating grid",
-    "why": "Restrained monochrome structural rhythm with no sky and no lit windows - a facade skin, not a corporate tower"
+    "note": "A curving charcoal-teal tower flank fills the left two thirds as a precise grid of recessed windows, with exactly two amber-lit interiors and a clean gradient dusk sky opening across the right.",
+    "why": "It is the brief almost literally — repetitive mullioned facade skin, near-monochrome cold blue against a single warm accent, low-key luma with a large quiet sky area headline type can sit over, and no sky cliche, people, text or gloss."
   },
   {
     "key": "architecture-03",
-    "id": 15663491,
-    "native": "4000x5989",
-    "focus": "attention",
-    "note": "Black and white interior stairwell void where a ceiling light slot throws a single hard wedge of daylight down a white wall, stair balustrade in silhouette at right",
-    "why": "Pure chiaroscuro - one light source with intent, most of the frame black, enormous calm negative space for type"
+    "id": 16955371,
+    "native": "6944x4629",
+    "focus": "centre",
+    "note": "Looking straight up the underside of a helical stair: an almost entirely black frame in which thin pale balustrade lines and stair soffits spiral around a single luminous ceiling void.",
+    "why": "It is literally the brief — a cinematic upward view of a sculptural stairwell lit by one source, near-monochrome, with deep true blacks filling the left and right thirds where headline type can sit."
   },
   {
     "key": "architecture-04",
-    "id": 20207682,
-    "native": "4000x2667",
+    "id": 34990829,
+    "native": "5467x3645",
     "focus": "centre",
-    "note": "Monochrome dusk view of a low glass-and-concrete pavilion behind a long board-formed wall, mirrored in the still dark water of a reflecting pool, bare branches overhead",
-    "why": "Contemporary modernist wall beside still dark water with a true mirror reflection; overcast grey, no colour, no people, no signage"
+    "note": "A huge titanium-clad ellipsoid rises straight out of a black, almost motionless reflecting pool at dusk; the shell is banded charcoal-to-pewter with one narrow gold band where the last low sun catches it, and that gold repeats as a soft column in the water at the right; the sky is a flat cold grey, a low dark treeline sits at the far right, and there are no people, signage or clutter anywhere in frame.",
+    "why": "It is the brief's serene monumental stone-and-water study in the site's own register: deep true blacks, near-monochrome pewter and slate with a single warm accent at the far end, a genuine mirror in dark water, and two large quiet areas (the empty water across the bottom, the bare sky top right) that headline type can sit over cleanly."
   },
   {
     "key": "architecture-05",
-    "id": 13692644,
-    "native": "4000x2667",
+    "id": 12392465,
+    "native": "3840x5760",
     "focus": "centre",
-    "note": "Low sun raking through a full-height vertical louvre screen, scattering bands and dapples of light across a polished stone floor in an otherwise dark room",
-    "why": "Light is unambiguously the subject; monochrome, low-key, black foreground mass, exactly the brise-soleil-on-stone idea"
+    "note": "A tall patterned metal screen and dark vertical timber battens on the left, low sun driving hard diamond-lattice light across a dark stone tile floor and up a quiet dark timber wall on the right.",
+    "why": "It is the brief almost literally — a screen filtering low sun into a dark interior with hard bands of light on a stone floor — and it is genuinely monochrome, matching the already near-zero-saturation architecture-03/04 frames, with a large quiet dark wall for type."
   },
   {
     "key": "architecture-06",

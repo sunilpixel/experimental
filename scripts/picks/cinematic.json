@@ -1,11 +1,11 @@
 [
   {
     "key": "hero",
-    "id": 18802079,
-    "native": "4000x6011",
+    "id": 34657590,
+    "native": "8192x5464",
     "focus": "centre",
-    "note": "flat-roofed timber and stone house with warm-lit windows set into a dark conifer headland above the sea at last light",
-    "why": "genuinely modernist volumes, stone piers and large glazing; warm interior light against a cold overcast dusk, and the tonally uniform dark forest across the left two-thirds stays quiet under the headline"
+    "note": "A long-lens dusk frame: a small pale moon hangs low in an empty violet-blue sky over four receding bands of snow ridge, the furthest peaks catching a thin amber-pink alpenglow, with an almost solid black conifer treeline sealing the bottom edge",
+    "why": "The upper 55 percent is uninterrupted graded sky, so the pinned headline sits on quiet tone at every step of the 1.15 to 1.6 scale and rotation, while the layered haze, the low moon and the single warm band deliver the brief's blue-hour cinematic opening without a scrap of saturated postcard colour"
   },
   {
     "key": "hero-reveal",
@@ -17,18 +17,18 @@
   },
   {
     "key": "nature",
-    "id": 18709769,
-    "native": "4000x5982",
+    "id": 31902244,
+    "native": "4672x7008",
     "focus": "centre",
-    "note": "a stone arched watchtower window opening onto layered misty ridges, near-black masonry surround",
-    "why": "one bold arch aperture reading near-black against luminous mist gives the strong, simple tonal contrast the background-clip:text lettering needs; restrained stone and mist palette, no sky blue"
+    "note": "A near-black, mossy rock hollow in the foreground opens onto a fog-filled clearing where two wind-bent trees stand, with wet roots and a shallow puddle running across the bottom edge.",
+    "why": "It keeps the slot's aperture conceit — a bold near-black frame around one luminous, quiet centre, which is exactly the simple tonal split the letter-shaped masks need — while replacing the stone arch with a colder, more restrained charcoal-and-mist palette and a full-bleed frame that holds real detail at 4672x7008."
   },
   {
     "key": "final",
-    "id": 14539405,
-    "native": "4000x2250",
+    "id": 15406028,
+    "native": "6016x4000",
     "focus": "centre",
-    "note": "a full moon low over a calm dark sea with a single silver light path, hills in silhouette either side",
-    "why": "near-monochrome, very dark and meditative, and the moon plus its reflection sit dead centre so the frame survives the collapse to a vertical slit"
+    "note": "A near-black open ocean with the horizon in the upper third and one cold silver moon-path glittering from the horizon straight down through the lower half of the frame; no land, no sky detail, no objects.",
+    "why": "It is the brief almost literally — vast calm water, a single silver light-path, no land, blue-black near-monochrome — and because the path is a vertical column of light near frame centre it stays legible as the circle collapses to an ellipse and then to a vertical slit, while the huge dead-black left half gives the end-credit type somewhere quiet to sit."
   }
 ]
