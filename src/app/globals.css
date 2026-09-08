@@ -278,3 +278,229 @@ html.lenis, html.lenis body { height: auto; }
 /* Hide scrollbar but keep scrollability */
 ::-webkit-scrollbar { width: 0; height: 0; }
 html { scrollbar-width: none; }
+
+/* ============================================================
+   PRELOADER — THE COLUMN CURTAIN
+   Five ink columns stand across the frame, one to a letter of
+   AURUM. Each falls as the count climbs and leaves its letter
+   standing; when the last one goes the gold rule draws under
+   the whole word, and the ground follows the columns down off
+   the hero.
+
+   Every value here is either a static paint or a resting state;
+   all motion is GSAP. Vertical dimensions are % of the fixed
+   overlay — never vh, and never --vh, which is written in a
+   passive effect and would use its 1vh fallback on first paint
+   and then jump.
+   ============================================================ */
+
+/* .grain is a fixed 4x-viewport mix-blend-mode:overlay layer at z-9998, directly
+   beneath this panel: a blended full-screen layer forces a backdrop read-back
+   every frame across the heaviest frame budget in the page's life, for a texture
+   nobody can see through opaque ink. Keyed off its OWN attribute, set at the top
+   of the layout effect and cleared in finish() — not off data-aurum-loaded,
+   which is set mid-exit and would switch this layer on as the ground falls. */
+html[data-aurum-loading] .grain { display: none; }
+
+/* ---------- DESKTOP is the base; the queries below are REDESIGNS ---------- */
+#aurum-preloader {
+  --pl-p:        clamp(1400px, max(140vw, 165vh), 2400px);
+  --pl-rail:     6vw;
+  /* Over-scan. The camera sits at a negative Z for the whole entrance, and a
+     negative Z under perspective SHRINKS its subtree about the origin — at the
+     resting -6vw that is ~2% off every edge, and at the entrance's -0.075P it
+     is ~3.5%. Without a bleed the curtain stopped short of the frame and read
+     as an inset card floating on the ground rather than as a curtain across
+     it. Applied to the curtain AND the word, so the two grids stay the same
+     grid and a column still cannot uncover anything but its own letter. */
+  --pl-bleed:    6%;
+  --pl-word-fs:  clamp(2.6rem, 9vw, 9.5rem);
+  /* word centre -> rule. A MULTIPLE OF THE WORD, not an em: the elements that
+     use this set no font-size of their own, so `0.74em` resolved against the
+     16px root and put the rule — and the whole chrome line hung off it — 12px
+     below centre, i.e. straight through the letters. */
+  --pl-rule-drop: calc(var(--pl-word-fs) * 0.80);
+  /* The columns are the only ornament in the composition, so the seam between
+     two of them is the only line that has to carry on ink. */
+  --pl-seam:     rgb(242 239 232 / 0.07);
+
+  /* Greyscale AA is unconditional inside a composited 3D context. Assert it from
+     frame one so the static and animated frames use the same rasteriser and the
+     type cannot visibly thin the instant motion starts. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#aurum-preloader .pl-stage {
+  perspective: var(--pl-p);
+  perspective-origin: 50% 50%;
+}
+
+/* The ONLY two preserve-3d nodes. Both paint nothing, so their layers cost no
+   texture memory. Neither may ever receive .will-anim or an opacity tween. */
+#aurum-preloader .pl-tilt,
+#aurum-preloader .pl-camera { transform-style: preserve-3d; }
+
+/* ---------- the standing word, behind the curtain ---------- */
+#aurum-preloader .pl-word {
+  position: absolute;
+  left: calc(-1 * var(--pl-bleed)); right: calc(-1 * var(--pl-bleed));
+  top: 50%;
+  margin-top: -0.5em;              /* line-height is 1, so this centres the row
+                                      without a transform GSAP would overwrite */
+  display: flex;
+  font-size: var(--pl-word-fs);
+  line-height: 1;
+}
+/* One cell per column, identical flex basis, so a column and its letter share
+   an axis BY CONSTRUCTION. A hand-tuned per-letter offset would be silently
+   wrong the first time the display face changed its advances. */
+#aurum-preloader .pl-cell {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: center;
+}
+/* The mask exists only for the EXIT, where the letters are swallowed upward.
+   At rest the glyph sits at 0 and the column in front is what hides it — so
+   unlike the aperture there is no percentage transform here that has to
+   survive hydration, and nothing for adoptRestingTransforms to read. The
+   padding/negative-margin pair widens the clip box without moving the glyph:
+   Playfair's ascenders and descenders overshoot the line box badly at this size. */
+#aurum-preloader .pl-letter {
+  display: block;
+  overflow: hidden;
+  padding: 0.24em 0 0.28em;
+  margin: -0.24em 0 -0.28em;
+}
+
+/* ---------- the rule, drawn under the whole word ---------- */
+#aurum-preloader .pl-rule-plane {
+  position: absolute;
+  left: var(--pl-rail); right: var(--pl-rail);
+  top: calc(50% + var(--pl-rule-drop));
+  height: 1px;
+}
+#aurum-preloader .pl-rule {
+  display: block; width: 100%; height: 1px;
+  transform-origin: left center;
+}
+
+/* ---------- the curtain ---------- */
+#aurum-preloader .pl-curtain {
+  position: absolute;
+  inset: calc(-1 * var(--pl-bleed));
+  display: flex;
+}
+#aurum-preloader .pl-col {
+  flex: 1 1 0;
+  position: relative;
+  /* Lifted off the ground along its WHOLE height, not just at the foot. The
+     ground is ink (#05060a); a column that starts at ink too is invisible for
+     its top half, and a curtain you cannot see is not a curtain — the reveal
+     read as letters simply popping on. Obsidian to graphite keeps it firmly
+     inside the dark palette while still separating from the ground. If more
+     separation is ever needed, push the last stop toward slate — never toward
+     a glow, a bevel or a blur. */
+  background: linear-gradient(180deg, #0b0d13 0%, #101319 56%, #171a22 100%);
+  transform-origin: 50% 100%;      /* it tips from its own foot as it rises */
+}
+/* The one lit edge, on the LEADING edge of the gesture — the columns rise, so
+   the line that sweeps up the frame is the top one. Without it a column is
+   just dark on dark and the movement reads as nothing at all. Static paint,
+   moved only by transform — never animate a gradient. */
+#aurum-preloader .pl-col::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent,
+    rgb(242 239 232 / 0.24) 14%, rgb(242 239 232 / 0.24) 86%, transparent);
+}
+/* Seam between neighbours only — the first column has no left-hand one, and a
+   border on every column would print a line down the frame edges too. */
+#aurum-preloader .pl-col + .pl-col { box-shadow: inset 1px 0 0 0 var(--pl-seam); }
+
+/* ---------- corner mark, in front of the curtain ---------- */
+#aurum-preloader .pl-mark {
+  position: absolute;
+  /* Hero's mark is top-[13vh] md:top-[16vh] left-[6vw]. Nothing in this
+     composition is raked, so unlike the aperture these ARE Hero's own numbers:
+     the mark holds position across the handoff and only the numeral changes,
+     00 -> 01. */
+  top: 16vh;
+  left: var(--pl-rail);
+  display: flex; align-items: flex-start; gap: 1.4vw;
+}
+#aurum-preloader .pl-mark-num  { font-size: clamp(2.4rem, 5.2vw, 6rem); line-height: 0.78; }
+#aurum-preloader .pl-mark-hair {
+  height: clamp(3rem, 5vw, 5.6rem); margin-top: 0.5vw; transform-origin: 50% 0%;
+}
+#aurum-preloader .pl-mark-eyebrow { margin-top: 0.6vw; }
+
+/* ---------- counter and year ----------
+   BOTH hang under the rule, at the two ends of it — not on the word's centre
+   line. The word is one letter per column across the whole frame, so its outer
+   cells run right into the rails: anything set on that line lands inside the A
+   or the M. Under the rule they read as one line of chrome closing the
+   wordmark, and nothing can collide with a letter. */
+#aurum-preloader .pl-plane { position: absolute; }
+#aurum-preloader .pl-plane-counter {
+  right: var(--pl-rail);
+  top: calc(50% + var(--pl-rule-drop) + 1.8vh);
+}
+#aurum-preloader .pl-counter-inner {
+  font-size: clamp(1.4rem, 2.5vw, 2.5rem);
+  letter-spacing: 0.06em;
+  width: 3.6em;
+  text-align: right;
+}
+#aurum-preloader .pl-plane-year {
+  left: var(--pl-rail);
+  top: calc(50% + var(--pl-rule-drop) + 2.6vh);
+}
+#aurum-preloader .pl-year-inner {
+  font-size: clamp(0.6rem, 0.78vw, 0.78rem);
+  letter-spacing: 0.42em;
+}
+
+/* ============ PORTRAIT PHONE — a redesign, not a scale-down ============
+   Five columns across 100vw is 20vw a column, and a phone cannot carry a
+   wordmark tracked that wide: the letters stop reading as a word. The curtain
+   keeps its five columns — the count and the fall are the point — but the word
+   closes up to a centred group and stops being one-letter-per-column. */
+@media (max-width: 767px) {
+  #aurum-preloader {
+    --pl-p: clamp(620px, max(150vw, 92vh), 1050px);
+    --pl-rail: 7vw;
+    --pl-word-fs: clamp(1.9rem, 13vw, 3.4rem);
+    /* Also a multiple of the word, and a bigger one: the phone's wordmark is
+       a closed-up group rather than one letter per column, so its ink sits
+       lower against the same centre line. At 0.86em — an em, against the 16px
+       root — the rule was drawn 17px ABOVE the letters' feet, straight through
+       the bottom of AURUM. */
+    --pl-rule-drop: calc(var(--pl-word-fs) * 1.0);
+  }
+  #aurum-preloader .pl-word { justify-content: center; }
+  #aurum-preloader .pl-cell { flex: 0 0 auto; padding: 0 0.06em; }
+  #aurum-preloader .pl-mark { top: 13vh; gap: 3vw; }
+  #aurum-preloader .pl-counter-inner { font-size: clamp(1.1rem, 5vw, 1.6rem); }
+  #aurum-preloader .pl-year-inner    { font-size: 0.58rem; letter-spacing: 0.34em; }
+}
+
+/* ============ REDUCED MOTION: the FINISHED card, on frame one ============
+   Pure CSS, so it is correct before hydration — useLayoutEffect runs before
+   paint but AFTER hydration, and cannot prevent the flash between the HTML
+   arriving and React loading. The !important beats the inline resting styles
+   cleanly because GSAP never runs on this path to fight them. The columns are
+   shown FALLEN, not removed: reduced motion asks for no motion, not for a
+   different composition — the columns are shown RISEN, off the top. ==== */
+@media (prefers-reduced-motion: reduce) {
+  #aurum-preloader .pl-tilt,
+  #aurum-preloader .pl-camera,
+  #aurum-preloader .pl-glyph,
+  #aurum-preloader .pl-plane-counter,
+  #aurum-preloader .pl-plane-year  { transform: none !important; }
+  #aurum-preloader .pl-col         { transform: translateY(-112%) !important; }
+  #aurum-preloader .pl-rule        { transform: scaleX(1) !important; }
+  #aurum-preloader .pl-mark-hair   { transform: scaleY(1) !important; }
+  #aurum-preloader .pl-mark,
+  #aurum-preloader .pl-counter-inner,
+  #aurum-preloader .pl-year-inner  { opacity: 1 !important; }
+}

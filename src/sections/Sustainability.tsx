@@ -145,9 +145,18 @@ export default function Sustainability() {
                 </span>
               </div>
 
+              {/*
+                Sized against the COLUMN, not the viewport. The plane is
+                md:38vw / lg:33vw less its own 4vw / 3.6vw gutters, so the
+                text box is 30vw at md and only 25.8vw at lg. "SUSTAINABILITY"
+                sets 7.96em wide in Playfair, which needs <=3.24vw at lg — the
+                old flat 4vw overflowed it, and .mask-line's overflow:hidden
+                clipped the word to "SUSTAINABILI" on every desktop.
+                Below md the plane is full-bleed, so that size is unchanged.
+              */}
               <h2
-                className="u-display text-ink"
-                style={{ fontSize: "clamp(2.1rem,4vw,3.9rem)", lineHeight: 0.94 }}
+                className="u-display text-ink text-[clamp(2.1rem,7vw,3.9rem)] md:text-[3.5vw] lg:text-[clamp(1.9rem,3.1vw,3.4rem)]"
+                style={{ lineHeight: 0.94 }}
               >
                 {["SUSTAINABILITY", "IS A LUXURY", "TOO."].map((line, i) => (
                   <span className="mask-line" key={line}>
