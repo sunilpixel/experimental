@@ -147,7 +147,15 @@ export default function Nature() {
                   >
                     <h2
                       aria-label="Nature"
-                      className="nature-type u-display whitespace-nowrap text-[clamp(4.5rem,34vw,9rem)] md:text-[clamp(6rem,25vw,26rem)]"
+                      /* 23vw, not 25vw. The word is centred in the room and
+                         the editorial furniture has to live outside it: the
+                         thesis above, the copy below. At 25vw its glyphs ran
+                         y 285-710 of a 900px frame, which left the lower block
+                         nowhere to go that was not inside a stem. 23vw gives
+                         back ~35px at each end without the word ceasing to be
+                         architecture. bgW/bgX/bgY re-measure the h2 box at
+                         runtime, so the photograph inside the letters follows. */
+                      className="nature-type u-display whitespace-nowrap text-[clamp(4.5rem,34vw,9rem)] md:text-[clamp(6rem,23vw,24rem)]"
                       style={{
                         ...D3,
                         lineHeight: 0.78,
@@ -219,7 +227,15 @@ export default function Nature() {
               className="nature-fore nature-thesis absolute left-[7vw] top-[12vh] z-20 max-w-[84vw] md:left-[5vw] md:top-[15vh] md:max-w-[42vw]"
               style={FORE_REST}
             >
-              <h3 className="u-display t-large">
+              {/*
+                Not t-large (5.2vw). At that size ALREADY THERE. sets ~720px
+                against a 42vw box and wrapped onto a FOURTH line, which pushed
+                the gold line down to y 410 — well inside the word, whose caps
+                start at y 285. The whole thesis has to live in the band above
+                the word: three lines at 4.3vw is 190px from the block's rendered
+                top of 75, and ALREADY THERE. stays on one line.
+              */}
+              <h3 className="u-display text-[clamp(1.7rem,4.3vw,4.4rem)]">
                 {THESIS.map((line) => (
                   <span key={line.text} className="mask-line">
                     <span
@@ -237,9 +253,15 @@ export default function Nature() {
 
             {/* Pull-quote — the opposing diagonal. Right edge, dropped a
                 third of the frame below the thesis so the two never read
-                as a column pair. */}
+                as a column pair.
+
+                md:right is 9vw, not 5vw. <ChapterProgress/> is fixed at
+                right-5 / lg:right-8 and its numerals and dots claim the last
+                ~50px of the frame: at 5vw the quote's last line and the
+                AURUM — 02 credit under it were being set straight over the
+                rail. 9vw clears the rail at every breakpoint it renders in. */}
             <div
-              className="nature-fore nature-quote absolute right-[7vw] top-[31vh] z-20 w-[70vw] text-right md:right-[5vw] md:top-[27vh] md:w-[21rem]"
+              className="nature-fore nature-quote absolute right-[7vw] top-[31vh] z-20 w-[70vw] text-right md:right-[9vw] md:top-[27vh] md:w-[21rem]"
               style={FORE_REST}
             >
               <span className="mask-line">
@@ -263,7 +285,7 @@ export default function Nature() {
             {/* Body + link — pushed off the left rail into the lower third,
                 sitting under the belly of the word. */}
             <div
-              className="nature-fore nature-copy absolute left-[7vw] top-[71vh] z-20 max-w-[82vw] md:left-[27vw] md:top-[72vh] md:max-w-[24rem]"
+              className="nature-fore nature-copy absolute left-[7vw] top-[71vh] z-20 max-w-[82vw] md:left-[27vw] md:top-[78vh] md:max-w-[24rem]"
               style={FORE_REST}
             >
               <span
