@@ -75,11 +75,37 @@ const HERO_CSS = `
   );
 }
 
+/*
+ * The headline is sized against BOTH axes, not width alone.
+ *
+ * t-mega is 13vw, which is a width-only rule, and the stack is three lines
+ * plus the line-3 gap — roughly 2.9x the font size. On any normal desktop that
+ * came to ~580px of headline dropped into the ~420px of clear air between the
+ * chapter mark (bottom ~26vh) and the subline (top 73%), so LUXURY was printed
+ * straight through "01 / A NEW DIMENSION OF LUXURY" on first paint at every
+ * viewport we shoot at. The vh term is what actually holds the composition
+ * apart; 11vw only takes over on tall, narrow windows.
+ *
+ * Both other sizes are derived from it so the staircase keeps its proportions:
+ * word-3 was 9.4vw against a 13vw headline, i.e. 0.72.
+ */
+#hero .hero-head {
+  --hero-fs: clamp(3.4rem, min(11vw, 17vh), 15rem);
+  font-size: var(--hero-fs);
+}
 #hero .hero-line { padding: 0.07em 0 0.09em; margin: -0.07em 0 -0.09em; }
 #hero .hero-line-1 { margin-left: 2vw; }
 #hero .hero-line-2 { margin-left: 16vw; }
-#hero .hero-line-3 { margin-left: 0; margin-top: calc(3vw - 0.07em); }
-#hero .hero-word-3 { font-size: clamp(1.6rem, 9.4vw, 10rem); }
+#hero .hero-line-3 { margin-left: 0; margin-top: calc(2.2vw - 0.07em); }
+/* P08 tracks this line from 0.01em out to 0.26em as it grows toward the
+   lens. At 150px that pushes DIFFERENTLY past the h1's 92vw content box, and a
+   wrapping line answers by breaking onto a second row mid-flight — the box
+   jumps ~130px in one frame and the word appears to leap. It must overflow
+   instead: by then it is scaled past the frame edge and on its way out. */
+#hero .hero-word-3 {
+  font-size: calc(var(--hero-fs) * 0.72);
+  white-space: nowrap;
+}
 
 #hero .hero-letter {
   -webkit-text-stroke: 1px rgb(242 239 232 / var(--lo, 0.09));
@@ -313,9 +339,15 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* ================= headline — three words, three depths ====== */}
+            {/* ================= headline — three words, three depths ======
+                md:51%, not 45%: the stack sits BELOW the chapter mark now
+                instead of starting level with it. Sizing is --hero-fs in
+                HERO_CSS (t-mega dropped — it is width-only and overflowed the
+                gap between the mark and the subline); moving the stack down
+                without also capping it against vh would just have pushed
+                DIFFERENTLY into the subline instead. */}
             <h1
-              className="hero-head u-display t-mega absolute top-[46%] left-[4vw] z-40 w-[92vw] -translate-y-1/2 text-ivory max-md:leading-[0.79] md:top-[45%]"
+              className="hero-head u-display absolute top-[46%] left-[4vw] z-40 w-[92vw] -translate-y-1/2 text-ivory max-md:leading-[0.79] md:top-[51%]"
               style={{
                 perspective: `${HERO_PLANES.perspective}px`,
                 perspectiveOrigin: "36% 50%",

@@ -228,7 +228,15 @@ export default function Residences() {
                   >
                     <span className="mask-line">
                       <span
-                        className="res-cap-line u-display t-medium block whitespace-nowrap text-ivory"
+                        /* Not t-medium (3.4vw). These are nowrap names on a
+                           plane that floats 120px in front of the photograph,
+                           so the longest of them — THE MOUNTAINS — set 445px
+                           wide and reached across the copy rail on the right
+                           whenever its card was anywhere but dead centre.
+                           2.9vw keeps the scale contrast against the 7vw
+                           ledger numeral and gets the ink back inside the
+                           frame's clear middle. */
+                        className="res-cap-line u-display text-[clamp(1.5rem,2.9vw,3.1rem)] block whitespace-nowrap text-ivory"
                         style={HIDDEN_LINE}
                       >
                         {r.name}

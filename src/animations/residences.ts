@@ -26,7 +26,31 @@ const ACTIVE_SCALE = 1.12;
 /** Scale a panel falls back to once it swings off the axis. */
 const IDLE_SCALE = 0.9;
 const IDLE_OPACITY = 0.5;
-const IDLE_META_OPACITY = 0.28;
+/**
+ * 0, not 0.28. A caption belongs to the card facing the lens; at 0.28 the four
+ * cards that were NOT facing it kept printing their own name, place and year
+ * across whatever they happened to be drifting over — most visibly the ledger
+ * in the bottom-left corner, which was setting a 7vw numeral straight through
+ * "THE CLIFF / TROMS, NORWAY / 2023 — 820 M²".
+ */
+const IDLE_META_OPACITY = 0;
+
+/**
+ * Clear air kept between a caption and the two pieces of fixed chrome it can
+ * reach — the ledger on the left rail and the copy rail on the right — and the
+ * distance over which it fades once it crosses into them. See CAPTION GUARD.
+ */
+const CHROME_PAD = 55;
+const CHROME_FADE = 45;
+/** How far an idle panel recedes when its photograph is behind the copy rail. */
+const RAIL_RECEDE = 0.85;
+/** Must track .res-stage's `perspective` and .res-meta's translateZ in
+ *  Residences.tsx — the guard projects caption edges through both. */
+const PERSPECTIVE = 1400;
+const META_Z = 120;
+/** Floor on the ledger's right edge, as a fraction of the frame: its width
+ *  moves with the place name it is currently showing. */
+const LEDGER_MIN_RIGHT = 0.17;
 const IDLE_BRIGHT = 0.5;
 
 /** The track finishes crossing the frame here. */
@@ -73,6 +97,12 @@ type Cache = {
   collapseScale: number[];
   /** panel indices ordered outermost -> innermost at the end of the track */
   order: number[];
+  /** widest caption line per panel, in untransformed layout px */
+  capW: number[];
+  /** x the caption must stay right of — the ledger's right edge */
+  safeL: number;
+  /** x the caption must stay left of — the copy rail's left edge */
+  safeR: number;
 };
 
 export function initResidences(root: HTMLElement): () => void {
@@ -184,7 +214,52 @@ export function initResidences(root: HTMLElement): () => void {
         .map((_, i) => i)
         .sort((a, b) => distance[b] - distance[a]);
 
-      return { vw, stageH, stageLeft, travel, left, width, yOff, collapseX, collapseScale, order };
+      /* ---------------------------------------------------- CAPTION GUARD
+         Widest caption line per panel, in LAYOUT px.
+
+         This has to be measured OFF the panel. By the time this runs the deck
+         is already parked at z:-620 under the stage's perspective and the far
+         panels are most of a screen outside the frame, and a Range rect and an
+         element rect do not come back foreshortened by the same factor out
+         there — dividing one by the other read THE MOUNTAINS as 40px wide when
+         it sets 510, and the guard below never fired. A detached span wearing
+         the same font is transform-proof and exact. */
+      const rule = document.createElement("span");
+      rule.setAttribute("aria-hidden", "true");
+      rule.style.cssText =
+        "position:absolute;left:-9999px;top:0;white-space:pre;visibility:hidden;pointer-events:none";
+      document.body.appendChild(rule);
+      const inkWidth = (el: HTMLElement) => {
+        const cs = getComputedStyle(el);
+        for (const prop of [
+          "font", "fontFamily", "fontSize", "fontWeight", "fontStyle",
+          "letterSpacing", "wordSpacing", "textTransform",
+        ] as const) {
+          rule.style[prop] = cs[prop];
+        }
+        rule.textContent = el.textContent ?? "";
+        return rule.getBoundingClientRect().width;
+      };
+      const capW = panels.map((p) => {
+        let widest = 0;
+        p.querySelectorAll<HTMLElement>(".res-cap-line").forEach((line) => {
+          widest = Math.max(widest, inkWidth(line));
+        });
+        return widest;
+      });
+      rule.remove();
+
+      /* The two pieces of chrome a drifting caption can collide with. Only
+         their x matters, and both are pinned to the stage's own edges, so
+         these hold for the whole chapter. The ledger's right edge moves with
+         the place name it is currently showing — floor it. */
+      const safeL = Math.max(
+        ledger ? ledger.getBoundingClientRect().right : 0,
+        stageLeft + vw * LEDGER_MIN_RIGHT,
+      );
+      const safeR = rail ? rail.getBoundingClientRect().left : stageLeft + vw;
+
+      return { vw, stageH, stageLeft, travel, left, width, yOff, collapseX, collapseScale, order, capW, safeL, safeR };
     };
 
     let cache: Cache = measure();
@@ -281,14 +356,61 @@ export function initResidences(root: HTMLElement): () => void {
         // The cylinder. Positive arc = right of the lens, so its right edge is
         // the far edge and rotationY is positive.
         setRotY[i](arc * cfg.rotY);
-        setZ[i](-cfg.depth * (1 - Math.cos(Math.abs(arc) * Math.PI * 0.5)));
+        const panelZ = -cfg.depth * (1 - Math.cos(Math.abs(arc) * Math.PI * 0.5));
+        setZ[i](panelZ);
 
         const s = IDLE_SCALE + (ACTIVE_SCALE - IDLE_SCALE) * te;
         setScaleX[i](s);
         setScaleY[i](s);
         setRoll[i](rotations[i] * (1 - te));
-        setLumOpacity[i](IDLE_OPACITY + (1 - IDLE_OPACITY) * te);
-        setMetaOpacity[i](IDLE_META_OPACITY + (1 - IDLE_META_OPACITY) * te);
+
+        /* How much of this panel's own photograph is sitting behind the copy
+           rail. An idle card parked under "Extraordinary homes in extraordinary
+           places." put a whole mountainside behind four lines of display type —
+           the type is at z +70 and stayed legible, but it read as two things
+           printed on top of each other rather than as depth. Depth in this
+           chapter is carried by luminance, so the card recedes instead: it is
+           already at half opacity off-axis, and this takes it far enough back
+           that the rail sits on ink. Weighted by (1 - te), so the card facing
+           the lens is never touched. */
+        const panelHalf = (c.width[i] * s) / 2;
+        const ppf = PERSPECTIVE / (PERSPECTIVE - panelZ);
+        const panelRight = half + (centre + panelHalf - half) * ppf;
+        const behindRail =
+          clamp01((panelRight - c.safeR) / Math.max(c.width[i] * s, 1)) * (1 - te);
+        const railGuard = 1 - RAIL_RECEDE * behindRail;
+
+        setLumOpacity[i]((IDLE_OPACITY + (1 - IDLE_OPACITY) * te) * railGuard);
+
+        /* Where this caption's ink actually lands, before we ask for it.
+           .res-meta is left:-7% / width:114% of the panel, and the title sets
+           from its left edge, so the ink runs from 7% outside the panel's left
+           edge for capW. A dominant card is still dominant several vw off
+           centre — 7vw off the lens it is still at te 0.96 — which is exactly
+           where its name reached across the copy rail and set THE MOUNTAINS
+           through "architecture that defers to the ground it stands on".
+
+           The caption rides its own plane 120px in FRONT of the photograph, so
+           the stage's perspective magnifies it about the perspective origin —
+           ~9% at z 0, which on a 400px caption is the 20-40px that was still
+           landing on the rail after the guard went in. Project the edges, do
+           not just scale them. rotationY foreshortens a caption NARROWER than
+           this, so ignoring the hinge only ever errs toward hiding it. */
+        const pf = PERSPECTIVE / (PERSPECTIVE - (panelZ + META_Z));
+        const capLeft0 = centre - (c.width[i] * s) / 2 - 0.07 * c.width[i] * s;
+        const capRight0 = capLeft0 + c.capW[i] * s;
+        const capLeft = half + (capLeft0 - half) * pf;
+        const capRight = half + (capRight0 - half) * pf;
+        const intrusion = Math.max(
+          c.safeL + CHROME_PAD - capLeft,
+          capRight - (c.safeR - CHROME_PAD),
+          0,
+        );
+        const chromeGuard = 1 - clamp01(intrusion / CHROME_FADE);
+
+        setMetaOpacity[i](
+          (IDLE_META_OPACITY + (1 - IDLE_META_OPACITY) * te) * chromeGuard,
+        );
         setBright[i](IDLE_BRIGHT + (1 - IDLE_BRIGHT) * te);
         setImgX[i](clampSigned(offset / half) * 6 * (1 - collapseMix));
       }

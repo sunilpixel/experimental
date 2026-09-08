@@ -94,10 +94,19 @@ async function download(id) {
  * colour, a little more contrast. Restrained and bold — never dark or veiled.
  * NEVER use .tint(): it converts to greyscale first and destroys the colour.
  * No grain, no upscaling, no progressive resize steps — these are real photos.
+ *
+ * `saturation` was 1.12, which is inside the noise on this particular set: half
+ * these frames are mist, snow, concrete and night, and they were landing on the
+ * page reading grey. 1.34 is a real lift and still short of the point where the
+ * gold-hour frames (experience-cultural, residence-desert) go orange.
+ *
+ * `modulate` scales chroma multiplicatively, so it does nothing whatever for a
+ * pixel that has none. Three sources here are monochrome BEFORE we touch them —
+ * see MONO below — and no grade can put colour back into them.
  */
 const grade = (p, exposure = 1) =>
   p
-    .modulate({ brightness: 1.02 * exposure, saturation: 1.12 })
+    .modulate({ brightness: 1.02 * exposure, saturation: 1.34 })
     .linear([1.06, 1.05, 1.04], [-8, -8, -7])
     .gamma(1.02)
     .sharpen({ sigma: 0.6 });
